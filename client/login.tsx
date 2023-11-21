@@ -2,6 +2,7 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getJson } from "../fetchHelper";
+import { Box, Button } from "@mui/material";
 
 export function LoginButton() {
   const [authorizationUrl, setAuthorizationUrl] = useState("");
@@ -28,7 +29,16 @@ export function LoginButton() {
     generateAuthorizationUrl();
   }, []);
 
-  return <a href={authorizationUrl}>Log in with Google</a>;
+  return (
+    <Button
+      href={authorizationUrl}
+      type="submit"
+      fullWidth
+      variant="contained"
+      sx={{ my: 5 }}>
+      Log in with Google
+    </Button>
+  );
 }
 
 export function LoginCallback() {
