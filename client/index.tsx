@@ -7,6 +7,7 @@ import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import FrontPage from "./frontpage.tsx";
+import Home from "./home.tsx";
 
 const GOOGLE_CLIENT_ID =
   "165374536588-0odh4etu62sr5dgq6kdl207ovddbtotd.apps.googleusercontent.com";
@@ -24,8 +25,4 @@ export function ChatClient() {
       </Routes>
     </BrowserRouter>
   );
-}
-
-function Home() {
-  return <></>;
 }
