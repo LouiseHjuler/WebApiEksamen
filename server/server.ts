@@ -31,6 +31,7 @@ app.use(async (request: any, response, next) => {
       },
     });
     if (!userinfoRes.ok) {
+      response.clearCookie("access_token");
       response.sendStatus(401);
       return;
     }

@@ -76,7 +76,7 @@ const Drawer = styled(MuiDrawer, {
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
-export default function Dashboard() {
+export default function NewChat() {
   const [open, setOpen] = React.useState(true);
   const [dialogOpen, setDialogOpen] = React.useState(false);
   const toggleDrawer = () => {
@@ -124,8 +124,8 @@ export default function Dashboard() {
               sx={{ flexGrow: 1 }}>
               ChatClient
             </Typography>
-            <Button variant="contained" onClick={() => navigate("/newChat")}>
-              Start Chat
+            <Button variant="contained" onClick={() => navigate("/home")}>
+              Home
             </Button>
           </Toolbar>
         </AppBar>
