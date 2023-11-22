@@ -1,0 +1,26 @@
+import { MongoClient } from "mongodb";
+import dotenv from "dotenv";
+
+dotenv.config();
+
+new MongoClient(process.env.MONGODB_URL)
+  .connect()
+  .then((connection) => {
+    const database = connection.db("sample_mflix");
+    const moviesApi = express.Router();
+    movies.get("", (req, res) => {
+      moviesApi.get("/", async (req, res) => {
+        const movies = await database
+          .collection("movies")
+          .find({ year: 2016, countries: "Norway" })
+          .sort({ metacritic: -1 })
+          .limit(200)
+          .toArray();
+        res.json(movies);
+      });
+    });
+    app.use("/api/movies", moviesApi);
+  })
+  .catch((error) => {
+    console.error("while connecting to MongoDB", error);
+  });
