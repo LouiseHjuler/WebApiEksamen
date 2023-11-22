@@ -58,10 +58,27 @@ app.get("/home", (request: any, response) => {
   }
 });
 
-app.get("/chats", async (request, response) => {
+app.get("/api/chats", async (request, response) => {
+  const client = new MongoClient(process.env.ATLAS_URL!);
+  const connection = await client.connect();
+  const collection = connection.db("Chat").collection("Chats");
+  const chats = await collection
+    .find({ userId: (request as any).userInfo.sub })
+    .toArray();
+  response.json(chats);
+});
+
+app.post("/api/createChat", async (request, response) => {
   const client = new MongoClient(process.env.ATLAS_URL!);
   const connection = await client.connect();
   const database = connection.db("Chat");
+  const { title } = request.body;
+  await database.collection("Chats").insertOne({
+    userId: (request as any).userInfo.sub,
+    title: title,
+    chatters: [(request as any).userInfo.sub],
+  });
+  response.sendStatus(200);
 });
 
 app.listen(process.env.PORT || 3000);

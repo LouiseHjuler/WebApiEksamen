@@ -1,11 +1,25 @@
 export async function getApi(api: string) {
-  const res = await fetch(`api/${api}`, {
+  const response = await fetch(`api/${api}`, {
     method: "GET",
   });
 
-  const response = await res.json();
-  return response;
+  const json = await response.json();
+  return json;
 }
+export async function postApi(api: string, body: any) {
+  const response = await fetch(`api/${api}`, {
+    method: "POST",
+    body: JSON.stringify({
+      ...body,
+    }),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  const json = await response.json();
+  return json;
+}
+
 export async function getJson(url: string) {
   const response = await fetch(url, {
     method: "GET",

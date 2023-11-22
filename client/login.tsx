@@ -2,7 +2,7 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getJson } from "../fetchHelper";
-import { Box, Button } from "@mui/material";
+import { Button } from "@mui/material";
 
 export function LoginButton() {
   const [authorizationUrl, setAuthorizationUrl] = useState("");

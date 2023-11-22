@@ -9,19 +9,16 @@ import List from "@mui/material/List";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
-import Badge from "@mui/material/Badge";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
-import Link from "@mui/material/Link";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import NotificationsIcon from "@mui/icons-material/Notifications";
-import { mainListItems, secondaryListItems } from "./listItems";
-import { getApi, getJson } from "../fetchHelper";
+import { getApi, postApi } from "../fetchHelper";
 import { useNavigate } from "react-router-dom";
 import { SimpleDialog } from "./SimpleDialogue";
-import { Button } from "@mui/material";
+import { Button, TextField } from "@mui/material";
+import Chats from "./listItems";
 
 const drawerWidth: number = 240;
 
@@ -78,6 +75,7 @@ const defaultTheme = createTheme();
 
 export default function NewChat() {
   const [open, setOpen] = React.useState(true);
+  const [title, setTitle] = React.useState("");
   const [dialogOpen, setDialogOpen] = React.useState(false);
   const toggleDrawer = () => {
     setOpen(!open);
@@ -95,6 +93,12 @@ export default function NewChat() {
   }
 
   getUser();
+
+  async function createChat() {
+    try {
+      const ceateNewChat = await postApi("createChat", { title });
+    } catch (error) {}
+  }
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -143,9 +147,7 @@ export default function NewChat() {
           </Toolbar>
           <Divider />
           <List component="nav">
-            {mainListItems}
-            <Divider sx={{ my: 1 }} />
-            {secondaryListItems}
+            <Chats />
           </List>
         </Drawer>
         <Box
@@ -162,7 +164,16 @@ export default function NewChat() {
           <Toolbar />
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={3}>
-              {/* Chart */}
+              <TextField
+                label="Chat name"
+                value={title}
+                onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                  setTitle(event.target.value);
+                }}></TextField>
+              <Button
+                type="submit"
+                variant="contained"
+                onClick={() => createChat()}></Button>
               <Grid item xs={12} md={8} lg={9}>
                 <Paper
                   sx={{
