@@ -19,26 +19,11 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import { mainListItems, secondaryListItems } from "./listItems";
 import { getApi, getJson } from "../fetchHelper";
+import { useNavigate } from "react-router-dom";
+import { SimpleDialog } from "./SimpleDialogue";
 /*import Chart from "./Chart";
 import Deposits from "./Deposits";
 import Orders from "./Orders";*/
-
-function Copyright(props: any) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}>
-      {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
 
 const drawerWidth: number = 240;
 
@@ -95,12 +80,20 @@ const defaultTheme = createTheme();
 
 export default function Dashboard() {
   const [open, setOpen] = React.useState(true);
+  const [dialogOpen, setDialogOpen] = React.useState(false);
   const toggleDrawer = () => {
     setOpen(!open);
   };
 
+  const navigate = useNavigate();
+
   async function getUser() {
-    const userInfo = await getApi("user");
+    try {
+      const userInfo = await getApi("user");
+    } catch (error) {
+      // SimpleDialog();
+      navigate("/");
+    }
   }
 
   getUser();
@@ -184,10 +177,10 @@ export default function Dashboard() {
                   }}></Paper>
               </Grid>
             </Grid>
-            <Copyright sx={{ pt: 4 }} />
           </Container>
         </Box>
       </Box>
+      <SimpleDialog open={dialogOpen} onClose={() => setDialogOpen(false)} />
     </ThemeProvider>
   );
 }

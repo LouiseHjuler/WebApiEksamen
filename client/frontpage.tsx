@@ -14,31 +14,9 @@ import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { LoginButton } from "./login";
 
-export function Copyright(props: any) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}>
-      {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
-        not
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
-
-// TODO remove, this demo shouldn't need to reset the theme.
 export const defaultTheme = createTheme();
 
 export default function FrontPage() {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-  };
-
   return (
     <ThemeProvider theme={defaultTheme}>
       <Grid container component="main" sx={{ height: "100vh" }}>
@@ -80,7 +58,6 @@ export default function FrontPage() {
               we have fun here
             </Typography>
             <LoginButton />
-            <Copyright sx={{ mt: 5 }} />
           </Box>
         </Grid>
       </Grid>

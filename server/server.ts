@@ -1,9 +1,8 @@
 import express from "express";
 import dotenv from "dotenv";
 import * as path from "path";
-import { getJson, postJson } from "../fetchHelper";
 import cookieParser from "cookie-parser";
-
+import { MongoClient } from "mongodb";
 const app = express();
 app.use(express.json());
 dotenv.config();
@@ -18,24 +17,26 @@ app.use((req, res, next) => {
   }
 });
 
-app.use(async (request, response, next) => {
-  const access_token = cookieParser.signedCookie(
-    request.signedCookies["access_token"],
-    process.env.COOKIE_PARSER_SECRET!
-  );
-
+app.use(async (request: any, response, next) => {
+  const { username, access_token } = request.signedCookies;
   if (access_token) {
-    const { userinfo_endpoint } = await getJson(
+    const res = await fetch(
       "https://accounts.google.com/.well-known/openid-configuration"
     );
+    const discoveryDoc = await res.json();
 
-    const userInfo = await fetch(userinfo_endpoint, {
-      method: "GET",
+    const userinfoRes = await fetch(discoveryDoc.userinfo_endpoint, {
       headers: {
-        Authorization: "Bearer " + access_token,
+        Authorization: `Bearer ${access_token}`,
       },
     });
-    (request as any).userInfo = await userInfo.json();
+    if (!userinfoRes.ok) {
+      response.sendStatus(401);
+      return;
+    }
+    const userinfo = await userinfoRes.json();
+
+    request.userInfo = { ...userinfo, username: userinfo.email };
   }
   next();
 });
@@ -54,6 +55,12 @@ app.get("/home", (request: any, response) => {
   if (!request.userInfo) {
     return response.send(200);
   }
+});
+
+app.get("/chats", async (request, response) => {
+  const client = new MongoClient(process.env.ATLAS_URL!);
+  const connection = await client.connect();
+  const database = connection.db("Chat");
 });
 
 app.listen(process.env.PORT || 3000);
