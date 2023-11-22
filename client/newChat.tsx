@@ -76,6 +76,7 @@ const defaultTheme = createTheme();
 export default function NewChat() {
   const [open, setOpen] = React.useState(true);
   const [title, setTitle] = React.useState("");
+  const [fetchChats, setFetchChats] = React.useState(false);
   const [dialogOpen, setDialogOpen] = React.useState(false);
   const toggleDrawer = () => {
     setOpen(!open);
@@ -96,7 +97,9 @@ export default function NewChat() {
 
   async function createChat() {
     try {
-      const ceateNewChat = await postApi("createChat", { title });
+      await postApi("createChat", { title });
+      setTitle("");
+      setFetchChats(!fetchChats);
     } catch (error) {}
   }
 
@@ -147,7 +150,7 @@ export default function NewChat() {
           </Toolbar>
           <Divider />
           <List component="nav">
-            <Chats />
+            <Chats fetch={fetchChats} />
           </List>
         </Drawer>
         <Box

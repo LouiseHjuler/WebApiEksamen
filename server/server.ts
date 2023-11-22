@@ -78,7 +78,6 @@ app.post("/api/createChat", async (request, response) => {
     title: title,
     chatters: [(request as any).userInfo.sub],
   });
-  response.sendStatus(200);
 });
 
 app.listen(process.env.PORT || 3000);

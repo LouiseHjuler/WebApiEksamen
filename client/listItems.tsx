@@ -5,7 +5,7 @@ import ListItemText from "@mui/material/ListItemText";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import { getApi, getJson } from "../fetchHelper";
 
-export default function Chats() {
+export default function Chats({ fetch }) {
   const [chats, setChats] = React.useState([]);
 
   const mainListItems = (
@@ -25,7 +25,7 @@ export default function Chats() {
 
   React.useEffect(() => {
     getChats();
-  }, []);
+  }, [fetch]);
 
   async function getChats() {
     const chats = await getApi("chats");

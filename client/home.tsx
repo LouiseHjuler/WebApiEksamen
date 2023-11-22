@@ -140,7 +140,7 @@ export default function Dashboard() {
           </Toolbar>
           <Divider />
           <List component="nav">
-            <Chats />
+            <Chats fetch={false} />
           </List>
         </Drawer>
         <Box
