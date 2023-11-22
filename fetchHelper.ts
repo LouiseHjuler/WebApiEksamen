@@ -1,13 +1,9 @@
-async function getApi(api: string) {
+export async function getApi(api: string) {
   const res = await fetch(`api/${api}`, {
     method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
   });
 
   const response = await res.json();
-  console.log(response);
   return response;
 }
 export async function getJson(url: string) {

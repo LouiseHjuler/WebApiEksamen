@@ -18,19 +18,24 @@ app.use((req, res, next) => {
   }
 });
 
-app.get("/api/hello", function (request, response) {
-  response.send("World");
-});
+app.use(async (request, response, next) => {
+  const access_token = cookieParser.signedCookie(
+    request.signedCookies["access_token"],
+    process.env.COOKIE_PARSER_SECRET!
+  );
 
-app.use(async (request: any, response, next) => {
-  const authorization = request.header("Authorization");
-  if (authorization) {
+  if (access_token) {
     const { userinfo_endpoint } = await getJson(
       "https://accounts.google.com/.well-known/openid-configuration"
     );
-    request.userInfo = await postJson(userinfo_endpoint, {
-      headers: { authorization },
+
+    const userInfo = await fetch(userinfo_endpoint, {
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + access_token,
+      },
     });
+    (request as any).userInfo = await userInfo.json();
   }
   next();
 });
@@ -41,7 +46,11 @@ app.post("/api/login", (request, response) => {
   response.sendStatus(204);
 });
 
-app.get("/profile", (request: any, response) => {
+app.get("/api/user", (request: any, response) => {
+  response.json(request.userInfo);
+});
+
+app.get("/home", (request: any, response) => {
   if (!request.userInfo) {
     return response.send(200);
   }

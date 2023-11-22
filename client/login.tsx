@@ -57,6 +57,7 @@ export function LoginCallback() {
         "content-type": "application/json",
       },
     });
+    localStorage["access_token"] = access_token;
     navigate("/home");
   }
 
